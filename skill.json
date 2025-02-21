@@ -1,0 +1,46 @@
+{
+  "manifest": {
+    "apis": {
+      "custom": {
+        "endpoint": {
+          "sourceDir": "lambda/py",
+          "uri": "AskPlex"
+        },
+        "interfaces": [
+          {
+            "type": "AUDIO_PLAYER"
+          }
+        ]
+      }
+    },
+    "manifestVersion": "1.0",
+    "publishingInformation": {
+      "distributionCountries": [],
+      "isAvailableWorldwide": true,
+      "locales": {
+        "en-US": {
+          "description": "AskPlex is an Alexa skill which allows you to play music hosted by your plex media server",
+          "examplePhrases": [
+            "Alexa open askPlex",
+            "Alexa ask AskPlex to play some music",
+            "Alexa ask AskPlex to play rock music"
+          ],
+          "keywords": [],
+          "name": "AskPlex",
+          "summary": "Skill for playing music from your media server"
+        },
+        "es-US": {
+          "description": "AskPlex es una skill de alexa que permite reproducir música almacenada en tu servidor de medios plex",
+          "examplePhrases": [
+            "Alexa abre askPlex",
+            "Alexa pide a AskPlex pon música",
+            "Alexa pide a AskPlex pon música rock"
+          ],
+          "keywords": [],
+          "name": "AskPlex",
+          "summary": "Sample Short Description"
+        }
+      }
+    }
+  }
+}
