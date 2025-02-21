@@ -39,6 +39,8 @@ You will need to comply with the prerequisites below before creating the skill.
 16. Type: play music.
 17. If the music starts playing, congratulations! AskPlex is now ready.
 
+[![AskPlex installation video](https://img.youtube.com/vi/uPSYZyLXbg8/0.jpg)](https://youtu.be/uPSYZyLXbg8)
+
 ### Playlists Configuration
 
 1.  Go to the Developer Console for the skill and open Assets -> Slot Types -> playlist_names.
