@@ -1,0 +1,202 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "intents": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.PauseIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.ResumeIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NextIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.PreviousIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.ShuffleOffIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.ShuffleOnIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.RepeatIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.LoopOffIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.LoopOnIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StartOverIntent",
+          "samples": []
+        },
+        {
+          "slots": [],
+          "name": "PlaybackSongDetails",
+          "samples": [
+            "何が再生されていますか",
+            "この曲は何ですか",
+            "今再生されている曲は何ですか",
+            "この曲の名前は何ですか",
+            "曲の名前は何ですか",
+            "再生中の曲の名前は何ですか",
+            "これは何ですか",
+            "この曲は誰の曲ですか",
+            "この曲は誰が歌っていますか"
+          ]
+        },
+        {
+          "slots": [],
+          "name": "PlayRandomMusic",
+          "samples": [
+            "音楽を再生して",
+            "音楽を再生してください",
+            "ランダムな音楽を再生して",
+            "ランダムな曲を再生して",
+            "ランダムなトラックを再生して"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "artist",
+              "type": "AMAZON.Artist"
+            }
+          ],
+          "name": "PlayMusicByArtist",
+          "samples": [
+            "{artist}を再生して",
+            "{artist}の音楽を再生して",
+            "{artist}のバンドの音楽を再生して",
+            "{artist}の曲を再生して",
+            "{artist}のバンドの歌を再生して",
+            "{artist}の歌を再生して"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "song",
+              "type": "AMAZON.MusicRecording"
+            },
+            {
+              "name": "artist",
+              "type": "AMAZON.Artist"
+            }
+          ],
+          "name": "PlaySongByArtist",
+          "samples": [
+            "{song}は{artist}の曲",
+            "{artist}の{song}を再生して",
+            "{artist}の{song}を再生してください",
+            "{artist}の歌で{song}を再生して",
+            "{artist}のバンドの{song}を再生して"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "album",
+              "type": "AMAZON.MusicAlbum"
+            },
+            {
+              "name": "artist",
+              "type": "AMAZON.Artist"
+            }
+          ],
+          "name": "PlayAlbumByArtist",
+          "samples": [
+            "{album}は{artist}のアルバム",
+            "{artist}の{album}を再生して",
+            "{artist}の{album}を再生してください",
+            "{artist}のアルバム{album}を再生して",
+            "{artist}のバンドの{album}を再生して"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "genre",
+              "type": "AMAZON.Genre"
+            }
+          ],
+          "name": "PlayMusicByGenre",
+          "samples": [
+            "{genre}のジャンル",
+            "{genre}の音楽",
+            "{genre}ジャンルの音楽",
+            "{genre}ジャンルの曲を再生して",
+            "{genre}ジャンルの音楽を再生して"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "playlist",
+              "type": "playlist_names"
+            }
+          ],
+          "name": "PlayPlaylist",
+          "samples": [
+            "{playlist}",
+            "{playlist}プレイリスト",
+            "{playlist}プレイリストを再生して"
+          ]
+        },
+        {
+          "name": "AMAZON.YesIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NoIntent",
+          "samples": []
+        }
+      ],
+      "types": [
+        {
+          "values": [
+            {
+              "name": {
+                "value": "Recently Added"
+              }
+            },
+            {
+              "name": {
+                "value": "Recently Played"
+              }
+            }
+          ],
+          "name": "playlist_names"
+        }
+      ]
+    }
+  }
+}

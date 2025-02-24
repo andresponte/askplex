@@ -1,0 +1,212 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "intents": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.PauseIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.ResumeIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NextIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.PreviousIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.ShuffleOffIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.ShuffleOnIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.RepeatIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.LoopOffIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.LoopOnIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StartOverIntent",
+          "samples": []
+        },
+        {
+          "slots": [],
+          "name": "PlaybackSongDetails",
+          "samples": [
+            "Was läuft gerade",
+            "Welches Lied ist das",
+            "Was wird gerade gespielt",
+            "Wie heißt dieses Lied",
+            "Wie heißt das Lied",
+            "Wie heißt das Lied, das gerade läuft",
+            "Was ist das",
+            "Was läuft gerade",
+            "Wer singt dieses Lied",
+            "Wer ist der Künstler dieses Liedes",
+            "Wer singt das"
+          ]
+        },
+        {
+          "slots": [],
+          "name": "PlayRandomMusic",
+          "samples": [
+            "Spiele Musik",
+            "Spiele etwas Musik",
+            "Spiele zufällige Musik",
+            "Spiele zufällige Lieder",
+            "Spiele zufällige Tracks"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "artist",
+              "type": "AMAZON.Artist"
+            }
+          ],
+          "name": "PlayMusicByArtist",
+          "samples": [
+            "Spiele {artist}",
+            "Spiele den Künstler {artist}",
+            "Spiele den Sänger {artist}",
+            "Spiele die Band {artist}",
+            "Spiele Lieder von {artist}",
+            "Spiele Lieder des Sängers {artist}",
+            "Spiele Lieder der Band {artist}",
+            "Spiele Musik von {artist}",
+            "Spiele Musik des Sängers {artist}",
+            "Spiele Musik der Band {artist}"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "song",
+              "type": "AMAZON.MusicRecording"
+            },
+            {
+              "name": "artist",
+              "type": "AMAZON.Artist"
+            }
+          ],
+          "name": "PlaySongByArtist",
+          "samples": [
+            "Lied {song} von {artist}",
+            "Spiele {song} von {artist}",
+            "Spiele das Lied {song} von {artist}",
+            "Spiele das Lied {song} von Künstler {artist}",
+            "Spiele das Lied {song} vom Sänger {artist}",
+            "Spiele das Lied {song} von der Band {artist}"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "album",
+              "type": "AMAZON.MusicAlbum"
+            },
+            {
+              "name": "artist",
+              "type": "AMAZON.Artist"
+            }
+          ],
+          "name": "PlayAlbumByArtist",
+          "samples": [
+            "Album {album} von {artist}",
+            "Spiele {album} von {artist}",
+            "Spiele das Album {album} von {artist}",
+            "Spiele das Album {album} von Künstler {artist}",
+            "Spiele das Album {album} vom Sänger {artist}",
+            "Spiele das Album {album} von der Band {artist}"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "genre",
+              "type": "AMAZON.Genre"
+            }
+          ],
+          "name": "PlayMusicByGenre",
+          "samples": [
+            "Genre {genre}",
+            "Musik {genre}",
+            "Musik aus dem Genre {genre}",
+            "Spiele Lieder aus dem Genre {genre}",
+            "Spiele Genre {genre}",
+            "Spiele Musik {genre}",
+            "Spiele Musik aus dem Genre {genre}"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "playlist",
+              "type": "playlist_names"
+            }
+          ],
+          "name": "PlayPlaylist",
+          "samples": [
+            "{playlist}",
+            "Playlist {playlist}",
+            "Spiele die Playlist {playlist}"
+          ]
+        },
+        {
+          "name": "AMAZON.YesIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NoIntent",
+          "samples": []
+        }
+      ],
+      "types": [
+        {
+          "values": [
+            {
+              "name": {
+                "value": "Recently Added"
+              }
+            },
+            {
+              "name": {
+                "value": "Recently Played"
+              }
+            }
+          ],
+          "name": "playlist_names"
+        }
+      ]
+    }
+  }
+}

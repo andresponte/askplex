@@ -1,0 +1,243 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "intents": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.PauseIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.ResumeIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NextIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.PreviousIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.ShuffleOffIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.ShuffleOnIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.RepeatIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.LoopOffIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.LoopOnIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StartOverIntent",
+          "samples": []
+        },
+        {
+          "slots": [],
+          "name": "PlaybackSongDetails",
+          "samples": [
+            "qué está sonando",
+            "qué canción es esta",
+            "qué está sonando ahora",
+            "cómo se llama esta canción",
+            "cómo se llama la canción",
+            "cómo se llama la canción que está sonando",
+            "qué es esto",
+            "qué está sonando",
+            "cuál es el nombre de esta canción",
+            "cuál es el nombre de la canción",
+            "de quién es esta canción",
+            "de quién es la canción",
+            "quién canta esto",
+            "quién está cantando"
+          ]
+        },
+        {
+          "slots": [],
+          "name": "PlayRandomMusic",
+          "samples": [
+            "pon música",
+            "pon música aleatoria",
+            "pon canciones aleatorias",
+            "reproduce música aleatoria",
+            "reproduce canciones aleatorias"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "artist",
+              "type": "AMAZON.Artist"
+            }
+          ],
+          "name": "PlayMusicByArtist",
+          "samples": [
+            "pon {artist}",
+            "pon a {artist}",
+            "pon al artista {artist}",
+            "pon al cantante {artist}",
+            "pon a la banda {artist}",
+            "pon al grupo {artist}",
+            "pon canciones del artista {artist}",
+            "pon canciones del cantante {artist}",
+            "pon canciones de la banda {artist}",
+            "pon canciones del grupo {artist}",
+            "pon música del artista {artist}",
+            "pon música del cantante {artist}",
+            "pon música de la banda {artist}",
+            "pon música del grupo {artist}",
+            "reproduce canciones del artista {artist}",
+            "reproduce canciones del cantante {artist}",
+            "reproduce canciones de la banda {artist}",
+            "reproduce canciones del grupo {artist}",
+            "reproduce música del artista {artist}",
+            "reproduce música del cantante {artist}",
+            "reproduce música de la banda {artist}",
+            "reproduce música del grupo {artist}"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "song",
+              "type": "AMAZON.MusicRecording"
+            },
+            {
+              "name": "artist",
+              "type": "AMAZON.Artist"
+            }
+          ],
+          "name": "PlaySongByArtist",
+          "samples": [
+            "canción {song} de {artist}",
+            "pon {song} de {artist}",
+            "pon la canción {song} de {artist}",
+            "pon la canción {song} del artista {artist}",
+            "pon la canción {song} del cantante {artist}",
+            "pon la canción {song} de la banda {artist}",
+            "pon la canción {song} del grupo {artist}",
+            "reproduce {song} de {artist}",
+            "reproduce canción {song} de {artist}",
+            "reproduce la canción {song} de {artist}",
+            "reproduce la canción {song} del artista {artist}",
+            "reproduce la canción {song} del cantante {artist}",
+            "reproduce la canción {song} de la banda {artist}",
+            "reproduce la canción {song} del grupo {artist}"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "album",
+              "type": "AMAZON.MusicAlbum"
+            },
+            {
+              "name": "artist",
+              "type": "AMAZON.Artist"
+            }
+          ],
+          "name": "PlayAlbumByArtist",
+          "samples": [
+            "disco {album} de {artist}",
+            "álbum {album} de {artist}",
+            "pon el disco {album} de {artist}",
+            "pon el álbum {album} de {artist}",
+            "reproduce el disco {album} de {artist}",
+            "reproduce el álbum {album} de {artist}"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "genre",
+              "type": "AMAZON.Genre"
+            }
+          ],
+          "name": "PlayMusicByGenre",
+          "samples": [
+            "género {genre}",
+            "música {genre}",
+            "música del género {genre}",
+            "pon canciones del género {genre}",
+            "pon género {genre}",
+            "pon música {genre}",
+            "pon música del género {genre}",
+            "reproduce género {genre}",
+            "reproduce música {genre}",
+            "reproduce música del género {genre}",
+            "reproduce canciones del género {genre}"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "playlist",
+              "type": "playlist_names"
+            }
+          ],
+          "name": "PlayPlaylist",
+          "samples": [
+            "{playlist}",
+            "lista {playlist}",
+            "lista de reproducción {playlist}",
+            "pon la lista {playlist}",
+            "pon la lista de reproducción {playlist}",
+            "reproduce la lista {playlist}",
+            "reproduce la lista de reproducción {playlist}"
+          ]
+        },
+        {
+          "name": "AMAZON.YesIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NoIntent",
+          "samples": []
+        }
+      ],
+      "types": [
+        {
+          "values": [
+            {
+              "name": {
+                "value": "Recently Added"
+              }
+            },
+            {
+              "name": {
+                "value": "Recently Played"
+              }
+            }
+          ],
+          "name": "playlist_names"
+        }
+      ]
+    }
+  }
+}

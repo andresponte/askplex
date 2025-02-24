@@ -1,0 +1,223 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "intents": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.PauseIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.ResumeIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NextIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.PreviousIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.ShuffleOffIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.ShuffleOnIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.RepeatIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.LoopOffIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.LoopOnIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StartOverIntent",
+          "samples": []
+        },
+        {
+          "slots": [],
+          "name": "PlaybackSongDetails",
+          "samples": [
+            "Wat wordt er afgespeeld",
+            "Wat is dit voor een lied",
+            "Wat speelt er nu",
+            "Wat is de naam van dit lied",
+            "Wat is de naam van het lied",
+            "Wat is de naam van het nummer dat wordt afgespeeld",
+            "Wat is dit",
+            "Wat speelt er",
+            "Wie zingt dit nummer",
+            "Wie zingt dit lied",
+            "Wie zingt dit"
+          ]
+        },
+        {
+          "slots": [],
+          "name": "PlayRandomMusic",
+          "samples": [
+            "Speel muziek",
+            "Speel wat muziek",
+            "Speel willekeurige muziek",
+            "Speel willekeurige nummers",
+            "Speel willekeurige tracks"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "artist",
+              "type": "AMAZON.Artist"
+            }
+          ],
+          "name": "PlayMusicByArtist",
+          "samples": [
+            "Speel {artist}",
+            "Speel de artiest {artist}",
+            "Speel de zanger {artist}",
+            "Speel de band {artist}",
+            "Speel nummers van artiest {artist}",
+            "Speel nummers van zanger {artist}",
+            "Speel nummers van band {artist}",
+            "Speel muziek van artiest {artist}",
+            "Speel muziek van zanger {artist}",
+            "Speel muziek van band {artist}",
+            "Speel muziek van de artiest {artist}",
+            "Speel muziek van de zanger {artist}",
+            "Speel muziek van de band {artist}"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "song",
+              "type": "AMAZON.MusicRecording"
+            },
+            {
+              "name": "artist",
+              "type": "AMAZON.Artist"
+            }
+          ],
+          "name": "PlaySongByArtist",
+          "samples": [
+            "Nummer {song} van {artist}",
+            "Speel {song} van {artist}",
+            "Speel het nummer {song} van {artist}",
+            "Speel het nummer {song} van artiest {artist}",
+            "Speel het nummer {song} van zanger {artist}",
+            "Speel het nummer {song} van band {artist}",
+            "Speel het nummer {song} van de {artist}",
+            "Speel het nummer {song} van de artiest {artist}",
+            "Speel het nummer {song} van de zanger {artist}",
+            "Speel het nummer {song} van de band {artist}"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "album",
+              "type": "AMAZON.MusicAlbum"
+            },
+            {
+              "name": "artist",
+              "type": "AMAZON.Artist"
+            }
+          ],
+          "name": "PlayAlbumByArtist",
+          "samples": [
+            "Nummer {album} van {artist}",
+            "Speel {album} van {artist}",
+            "Speel het album {album} van {artist}",
+            "Speel het album {album} van artiest {artist}",
+            "Speel het album {album} van zanger {artist}",
+            "Speel het album {album} van band {artist}",
+            "Speel het album {album} van de {artist}",
+            "Speel het album {album} van de artiest {artist}",
+            "Speel het album {album} van de zanger {artist}",
+            "Speel het album {album} van de band {artist}"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "genre",
+              "type": "AMAZON.Genre"
+            }
+          ],
+          "name": "PlayMusicByGenre",
+          "samples": [
+            "Genre {genre}",
+            "Muziek {genre}",
+            "Muziek uit het genre {genre}",
+            "Speel nummers uit het genre {genre}",
+            "Speel genre {genre}",
+            "Speel muziek {genre}",
+            "Speel muziek uit het genre {genre}"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "playlist",
+              "type": "playlist_names"
+            }
+          ],
+          "name": "PlayPlaylist",
+          "samples": [
+            "{playlist}",
+            "Afspeellijst {playlist}",
+            "Speel de afspeellijst {playlist}"
+          ]
+        },
+        {
+          "name": "AMAZON.YesIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NoIntent",
+          "samples": []
+        }
+      ],
+      "types": [
+        {
+          "values": [
+            {
+              "name": {
+                "value": "Recently Added"
+              }
+            },
+            {
+              "name": {
+                "value": "Recently Played"
+              }
+            }
+          ],
+          "name": "playlist_names"
+        }
+      ]
+    }
+  }
+}

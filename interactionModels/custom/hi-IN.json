@@ -1,0 +1,214 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "intents": [
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.PauseIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.ResumeIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NextIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.PreviousIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.ShuffleOffIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.ShuffleOnIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.RepeatIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.LoopOffIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.LoopOnIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StartOverIntent",
+          "samples": []
+        },
+        {
+          "slots": [],
+          "name": "PlaybackSongDetails",
+          "samples": [
+            "क्या चल रहा है",
+            "यह कौन सा गाना है",
+            "क्या अभी चल रहा है",
+            "इस गाने का नाम क्या है",
+            "गाने का नाम क्या है",
+            "जो गाना चल रहा है उसका नाम क्या है",
+            "यह क्या है",
+            "यह गाना किसका है",
+            "यह गाना कौन गा रहा है"
+          ]
+        },
+        {
+          "slots": [],
+          "name": "PlayRandomMusic",
+          "samples": [
+            "संगीत चलाओ",
+            "कुछ संगीत चलाओ",
+            "यादृच्छिक संगीत चलाओ",
+            "यादृच्छिक गाने चलाओ",
+            "यादृच्छिक ट्रैक्स चलाओ"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "artist",
+              "type": "AMAZON.Artist"
+            }
+          ],
+          "name": "PlayMusicByArtist",
+          "samples": [
+            "चलाओ {artist}",
+            "फनकार {artist} को चलाओ",
+            "गायक {artist} को चलाओ",
+            "बैंड {artist} को चलाओ",
+            "गाने चलाओ {artist} के",
+            "गायक {artist} के गाने चलाओ",
+            "बैंड {artist} के गाने चलाओ",
+            "संगीत चलाओ {artist} का",
+            "संगीत चलाओ {artist} गायक का",
+            "संगीत चलाओ {artist} बैंड का"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "song",
+              "type": "AMAZON.MusicRecording"
+            },
+            {
+              "name": "artist",
+              "type": "AMAZON.Artist"
+            }
+          ],
+          "name": "PlaySongByArtist",
+          "samples": [
+            "गाना {song} {artist} का",
+            "चलाओ {song} {artist} का",
+            "चलाओ गाना {song} {artist} का",
+            "गायक {artist} का गाना {song} चलाओ",
+            "गाना {song} गायक {artist} का चलाओ",
+            "गाना {song} बैंड {artist} का चलाओ",
+            "गाना {song} {artist} का चलाओ",
+            "गाना {song} {artist} के साथ चलाओ",
+            "गाना {song} {artist} के द्वारा चलाओ"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "album",
+              "type": "AMAZON.MusicAlbum"
+            },
+            {
+              "name": "artist",
+              "type": "AMAZON.Artist"
+            }
+          ],
+          "name": "PlayAlbumByArtist",
+          "samples": [
+            "अलबम {album} {artist} का",
+            "चलाओ {album} {artist} का",
+            "चलाओ अलबम {album} {artist} का",
+            "चलाओ अलबम {album} गायक {artist} का",
+            "अलबम {album} {artist} का चलाओ",
+            "अलबम {album} बैंड {artist} का चलाओ",
+            "अलबम {album} {artist} के द्वारा चलाओ"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "genre",
+              "type": "AMAZON.Genre"
+            }
+          ],
+          "name": "PlayMusicByGenre",
+          "samples": [
+            "शैली {genre}",
+            "संगीत {genre}",
+            "संगीत शैली {genre}",
+            "शैली {genre} से गाने चलाओ",
+            "शैली {genre} से संगीत चलाओ",
+            "संगीत {genre} शैली में चलाओ",
+            "संगीत शैली {genre} से चलाओ"
+          ]
+        },
+        {
+          "slots": [
+            {
+              "name": "playlist",
+              "type": "playlist_names"
+            }
+          ],
+          "name": "PlayPlaylist",
+          "samples": [
+            "{playlist}",
+            "प्लेलिस्ट {playlist}",
+            "चलाओ प्लेलिस्ट {playlist}"
+          ]
+        },
+        {
+          "name": "AMAZON.YesIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NoIntent",
+          "samples": []
+        }
+      ],
+      "types": [
+        {
+          "values": [
+            {
+              "name": {
+                "value": "Recently Added"
+              }
+            },
+            {
+              "name": {
+                "value": "Recently Played"
+              }
+            }
+          ],
+          "name": "playlist_names"
+        }
+      ]
+    }
+  }
+}

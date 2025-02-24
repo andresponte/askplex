@@ -23,7 +23,7 @@ You will need to comply with the prerequisites below before creating the skill.
 
 1.  Sign in to [https://developer.amazon.com/](https://developer.amazon.com/) with your Amazon user account.
 2.  Go to the Alexa Developer Console at [https://developer.amazon.com/alexa/console/ask](https://developer.amazon.com/alexa/console/ask) and then create the skill.
-3.  Enter a name for your skill (e.g., AskPlex) and select your primary locale. (English (US) and Spanish (US) are currently supported. For additional locales support, feel free to create a custom interaction model at `interactionModels` folder, update the `lambda\askplex\language_strings.json` file and make a pull request).
+3.  Enter a name for your skill (e.g., AskPlex) and select your primary locale.
 4.  Choose the "Music & Audio" experience type, a custom model, and Alexa-hosted (Python) service. Select the hosting region closest to your location to reduce latency.
 5.  In the "Templates" tab, click on "Import skill" and enter the AskPlex repository URL: (https://github.com/andresponte/askplex.git).
 6.  Wait until the installation finishes, then go to the CUSTOM menu and open Invocations -> Skill Invocation Name.
