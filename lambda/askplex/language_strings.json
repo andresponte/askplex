@@ -18,7 +18,7 @@
         "PMS_ARTIST_SEARCH_EMPTY": "Sorry, I can't find {} in your collection",
         "PMS_SONG_SEARCH_ERROR": "Sorry, there was an error when searching for the song {song} by {artist}",
         "PMS_SONG_SEARCH_EMPTY": "Sorry, I can't find the song {song} by {artist} in your collection",
-        "PMS_ALBUM_SEARCH_ERROR": "Sorry, there was an error when searching for the album {song} by {artist}",
+        "PMS_ALBUM_SEARCH_ERROR": "Sorry, there was an error when searching for the album {album} by {artist}",
         "PMS_ALBUM_SEARCH_EMPTY": "Sorry, the album {album} by {artist} doesn't have any tracks",
         "PMS_GENRE_SEARCH_ERROR": "Sorry, there was an error when searching for {} music",
         "PMS_GENRE_SEARCH_EMPTY": "Sorry, I can't find {} music in your collection",
