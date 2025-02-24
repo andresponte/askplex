@@ -81,10 +81,10 @@
           "name": "PlayRandomMusic",
           "samples": [
             "Play music",
-			"Play some music",
+            "Play some music",
             "Play random music",
             "Play random songs",
-			"Play random tracks"
+            "Play random tracks"
           ]
         },
         {
@@ -133,7 +133,6 @@
             "Play the song {song} by artist {artist}",
             "Play the song {song} by singer {artist}",
             "Play the song {song} by band {artist}",
-            "Play {song} by {artist}",
             "Play the song {song} by the {artist}",
             "Play the song {song} by the artist {artist}",
             "Play the song {song} by the singer {artist}",
@@ -159,7 +158,6 @@
             "Play the album {album} by artist {artist}",
             "Play the album {album} by singer {artist}",
             "Play the album {album} by band {artist}",
-            "Play {album} by {artist}",
             "Play the album {album} by the {artist}",
             "Play the album {album} by the artist {artist}",
             "Play the album {album} by the singer {artist}",
@@ -223,8 +221,7 @@
           ],
           "name": "playlist_names"
         }
-      ],
-      "invocationName": "plex"
+      ]
     }
   }
 }
