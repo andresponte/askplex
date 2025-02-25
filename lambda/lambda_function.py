@@ -60,7 +60,7 @@ class CheckAudioInterfaceHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        logger.debug('In CheckAudioInterfaceHandler')
+        logger.debug('In CheckAudioInterfaceHandler()')
 
         # get localization data
         data = handler_input.attributes_manager.request_attributes["_"]
@@ -85,7 +85,7 @@ class SessionEndedRequestHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        logger.info("In SessionEndedRequestHandler")
+        logger.info("In SessionEndedRequestHandler()")
         logger.info("Session ended with reason: {}".format(handler_input.request_envelope.request.reason))
         return handler_input.response_builder.response
 
@@ -111,7 +111,7 @@ class LaunchRequestHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        logger.debug('In LaunchRequestHandler')
+        logger.debug('In LaunchRequestHandler()')
         persistence_attr = handler_input.attributes_manager.persistent_attributes
         playback_info = persistence_attr.get("playback_info")
         player_controller = controller.Controller(logger, handler_input)
@@ -165,7 +165,7 @@ class YesHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        logger.debug('In Yes Handler')
+        logger.debug('In YesHandler()')
         session_attr = handler_input.attributes_manager.session_attributes
 
         if session_attr.get("request") == "resume":
@@ -190,7 +190,7 @@ class NoHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        logger.debug('In No Handler')
+        logger.debug('In NoHandler()')
         session_attr = handler_input.attributes_manager.session_attributes
 
         if session_attr.get("request") == "resume":
@@ -224,7 +224,7 @@ class HelpIntentHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        logger.debug('In HelpIntentHandler')
+        logger.debug('In HelpIntentHandler()')
 
         # get localization data
         data = handler_input.attributes_manager.request_attributes["_"]
@@ -256,7 +256,7 @@ class ResumePlaybackHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        logger.debug('In StartPlaybackHandler')
+        logger.debug('In ResumePlaybackHandler()')
         persistence_attr = handler_input.attributes_manager.persistent_attributes
         playback_info = persistence_attr.get("playback_info")
 
@@ -279,7 +279,7 @@ class StartOverPlaybackHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        logger.debug('In StartPlaybackHandler')
+        logger.debug('In StartOverPlaybackHandler()')
         persistence_attr = handler_input.attributes_manager.persistent_attributes
         playback_info = persistence_attr.get("playback_info")
 
@@ -306,7 +306,7 @@ class PausePlaybackHandler(AbstractRequestHandler):
 
     def handle(self, handler_input: HandlerInput) -> Response:
         # type: (HandlerInput) -> Response
-        logger.debug('In PausePlaybackHandler')
+        logger.debug('In PausePlaybackHandler()')
         persistence_attr = handler_input.attributes_manager.persistent_attributes
         playback_info = persistence_attr.get("playback_info")
 
@@ -334,7 +334,7 @@ class PreviousPlaybackHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        logger.debug('In PreviousPlaybackHandler')
+        logger.debug('In PreviousPlaybackHandler()')
         persistence_attr = handler_input.attributes_manager.persistent_attributes
         playback_info = persistence_attr.get("playback_info")
 
@@ -362,7 +362,7 @@ class NextPlaybackHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        logger.debug('In NextPlaybackHandler')
+        logger.debug('In NextPlaybackHandler()')
         persistence_attr = handler_input.attributes_manager.persistent_attributes
         playback_info = persistence_attr.get("playback_info")
 
@@ -386,7 +386,7 @@ class ShuffleOnPlaybackHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        logger.debug('In ShuffleOn Handler')
+        logger.debug('In ShuffleOnPlaybackHandler()')
         persistence_attr = handler_input.attributes_manager.persistent_attributes
         playback_info = persistence_attr.get("playback_info")
 
@@ -410,7 +410,7 @@ class ShuffleOffPlaybackHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        logger.debug('In ShuffleOff Handler')
+        logger.debug('In ShuffleOffPlaybackHandler()')
         persistence_attr = handler_input.attributes_manager.persistent_attributes
         playback_info = persistence_attr.get("playback_info")
 
@@ -433,7 +433,7 @@ class LoopOnPlaybackHandler(AbstractRequestHandler):
         return is_intent_name('AMAZON.LoopOnIntent')(handler_input)
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        logger.debug('In LoopOn Handler')
+        logger.debug('In LoopOnPlaybackHandler()')
         persistence_attr = handler_input.attributes_manager.persistent_attributes
         playback_info = persistence_attr.get("playback_info")
 
@@ -457,7 +457,7 @@ class LoopOffPlaybackHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        logger.debug('In LoopOff Handler')
+        logger.debug('In LoopOffPlaybackHandler()')
         persistence_attr = handler_input.attributes_manager.persistent_attributes
         playback_info = persistence_attr.get("playback_info")
 
@@ -481,7 +481,7 @@ class PlaybackStartedHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        logger.debug('In PlaybackStartedHandler')
+        logger.debug('In PlaybackStartedHandler()')
         player_controller = controller.Controller(logger, handler_input)
         return player_controller.playback_started()
 
@@ -499,7 +499,7 @@ class PlaybackStoppedHandler(AbstractRequestHandler):
 
     def handle(self, handler_input: HandlerInput) -> Response:
         # type: (HandlerInput) -> Response
-        logger.debug('In PlaybackStoppedHandler')
+        logger.debug('In PlaybackStoppedHandler()')
         player_controller = controller.Controller(logger, handler_input)
         return player_controller.playback_stopped()
 
@@ -518,7 +518,7 @@ class PlaybackNearlyFinishedHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        logger.debug('In PlaybackNearlyFinishedHandler')
+        logger.debug('In PlaybackNearlyFinishedHandler()')
         player_controller = controller.Controller(logger, handler_input)
         return player_controller.playback_nearly_finished()
 
@@ -536,7 +536,7 @@ class PlaybackFinishedHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        logger.debug('In PlaybackFinishedHandler')
+        logger.debug('In PlaybackFinishedHandler()')
         player_controller = controller.Controller(logger, handler_input)
         return player_controller.playback_finished()
 
@@ -554,7 +554,7 @@ class PlaybackFailedEventHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        logger.debug('In PlaybackFailedHandler')
+        logger.debug('In PlaybackFailedEventHandler()')
         player_controller = controller.Controller(logger, handler_input)
         return player_controller.playback_failed()
 
@@ -575,7 +575,7 @@ class PlaybackSongDetailsHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        logger.debug('In PlaybackSongDetails Handler')
+        logger.debug('In PlaybackSongDetailsHandler()')
         persistence_attr = handler_input.attributes_manager.persistent_attributes
         playback_info = persistence_attr.get("playback_info")
 
@@ -607,7 +607,7 @@ class PlayRandomMusicHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        logger.debug('In PlayRandomMusicHandler')
+        logger.debug('In PlayRandomMusicHandler()')
         player_controller = controller.Controller(logger, handler_input)
         return player_controller.play_random_music()
 
@@ -625,7 +625,7 @@ class PlayMusicByArtistHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        logger.debug('In PlayMusicByArtistHandler')
+        logger.debug('In PlayMusicByArtistHandler()')
         player_controller = controller.Controller(logger, handler_input)
         return player_controller.play_music_by_artist()
 
@@ -643,7 +643,7 @@ class PlaySongByArtistHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        logger.debug('In PlaySongByArtistHandler')
+        logger.debug('In PlaySongByArtistHandler()')
         player_controller = controller.Controller(logger, handler_input)
         return player_controller.play_song_by_artist()
 
@@ -661,7 +661,7 @@ class PlayAlbumByArtistHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        logger.debug('In PlayAlbumByArtistHandler')
+        logger.debug('In PlayAlbumByArtistHandler()')
         player_controller = controller.Controller(logger, handler_input)
         return player_controller.play_album_by_artist()
 
@@ -679,7 +679,7 @@ class PlayMusicByGenreHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        logger.debug('In PlayMusicByGenreHandler')
+        logger.debug('In PlayMusicByGenreHandler()')
         player_controller = controller.Controller(logger, handler_input)
         return player_controller.play_music_by_genre()
 
@@ -697,7 +697,7 @@ class PlayPlaylistHandler(AbstractRequestHandler):
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
-        logger.debug('In PlayPlaylistHandler')
+        logger.debug('In PlayPlaylistHandler()')
         player_controller = controller.Controller(logger, handler_input)
         return player_controller.play_playlist()
 
@@ -718,7 +718,7 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
 
     def handle(self, handler_input, exception):
         # type: (HandlerInput, Exception) -> Response
-        logger.info("In CatchAllExceptionHandler")
+        logger.info("In CatchAllExceptionHandler()")
         logger.error(exception, exc_info=True)
 
         # get localization data

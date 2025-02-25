@@ -186,6 +186,7 @@ class Controller:
             Dict: The current track information
         """
 
+        self.logger.debug('In get_current_track()')
         persistence_attr = self.handler_input.attributes_manager.persistent_attributes
         playback_info = persistence_attr.get("playback_info")
 
@@ -209,7 +210,7 @@ class Controller:
             None
         """
 
-        self.logger.debug('In shuffle_playback()')
+        self.logger.debug('In shuffle_play_order()')
         persistence_attr = self.handler_input.attributes_manager.persistent_attributes
         playback_info = persistence_attr.get("playback_info")
 
@@ -273,7 +274,7 @@ class Controller:
             AudioItem: An object containing the audio stream and metadata for the track.
         """
 
-        self.logger.debug('In to_audio_item()')
+        self.logger.debug('In track_to_audio_item()')
 
         metadata = AudioItemMetadata(
             title = track["title"],
@@ -309,7 +310,7 @@ class Controller:
             in audio item format. If there is no current track, the response object is empty.
         """
 
-        self.logger.debug('In startPlayback()')
+        self.logger.debug('In resume_playback()')
         persistence_attr = self.handler_input.attributes_manager.persistent_attributes
         playback_info = persistence_attr.get("playback_info")
 
@@ -333,7 +334,7 @@ class Controller:
             in audio item format. If there is no current track, the response object is empty.
         """
 
-        self.logger.debug('In startPlayback()')
+        self.logger.debug('In start_playback()')
         persistence_attr = self.handler_input.attributes_manager.persistent_attributes
         playback_info = persistence_attr.get("playback_info")
 
@@ -348,7 +349,7 @@ class Controller:
         Returns:
             Response: The response object with the stop directive.
         """
-        self.logger.debug('In pausePlayback()')
+        self.logger.debug('In pause_playback()')
 
         self.handler_input.response_builder.add_directive(StopDirective()).set_should_end_session(True)
         return self.handler_input.response_builder.response
@@ -362,7 +363,7 @@ class Controller:
             in audio item format. If there are no more tracks, the response object is empty.
         """
 
-        self.logger.debug('In pausePlayback()')
+        self.logger.debug('In previous_playback()')
 
         prevous_track = self.get_prevous_track()
         if prevous_track == None:
@@ -382,7 +383,7 @@ class Controller:
             in audio item format. If there are no more tracks, the response object is empty.
         """
 
-        self.logger.debug('In pausePlayback()')
+        self.logger.debug('In next_playback()')
 
         next_track = self.get_next_track(True)
         if next_track == None:
@@ -405,7 +406,7 @@ class Controller:
             Response: The response object with no output speech.
         """
 
-        self.logger.debug('In shuffle()')
+        self.logger.debug('In loop_playback()')
         persistence_attr = self.handler_input.attributes_manager.persistent_attributes
         playback_setting = persistence_attr.get("playback_setting")
 
@@ -436,6 +437,8 @@ class Controller:
         Returns:
             Response: The response object containing the spoken output with the track details.
         """
+
+        self.logger.debug('In retrieve_track_details()')
 
         # get localization data
         data = self.handler_input.attributes_manager.request_attributes["_"]
@@ -500,6 +503,7 @@ class Controller:
             in audio item format. If there are no more tracks, the response object is empty.
         """
 
+        self.logger.debug('In playback_nearly_finished()')
         persistence_attr = self.handler_input.attributes_manager.persistent_attributes
         playback_info = persistence_attr.get("playback_info")
 
@@ -530,6 +534,7 @@ class Controller:
             Response: The response object with no output speech.
         """
 
+        self.logger.debug('In playback_finished()')
         persistence_attr = self.handler_input.attributes_manager.persistent_attributes
         playback_info = persistence_attr.get("playback_info")
 
@@ -554,6 +559,7 @@ class Controller:
         Returns:
             Response: The response object with no output speech.
         """
+        
         self.logger.debug('In playback_failed()')
         persistence_attr = self.handler_input.attributes_manager.persistent_attributes
         playback_info = persistence_attr.get("playback_info")
@@ -561,6 +567,7 @@ class Controller:
         playback_info["in_playback_session"] = False
 
         return self.handler_input.response_builder.response
+
 
 #
 # Plex API utils
@@ -576,6 +583,8 @@ class Controller:
             Response: The response object containing the speech output in case of error,
             otherwize returns None.
         """
+
+        self.logger.debug('In load_music_section()')
 
         # get localization data
         data = self.handler_input.attributes_manager.request_attributes["_"]
@@ -603,6 +612,7 @@ class Controller:
         Returns:
             None
         """
+
         self.logger.debug('In set_playlist_name()')
         persistence_attr = self.handler_input.attributes_manager.persistent_attributes
         playback_info = persistence_attr.get("playback_info")
@@ -617,8 +627,8 @@ class Controller:
         Returns:
             None
         """
-        self.logger.debug('In add_plex_track()')
 
+        self.logger.debug('In add_plex_track()')
         track = {
                 "id": str(plex_track.ratingKey),
                 "title": plex_track.title,
@@ -640,8 +650,8 @@ class Controller:
         Returns:
             None
         """
-        self.logger.debug('In add_plex_tracks()')
 
+        self.logger.debug('In add_plex_tracks()')
         for plex_track in plex_track_list:
             self.add_plex_track(plex_track)
 
@@ -658,6 +668,9 @@ class Controller:
         Returns:
             Response: The response object containing the result of the playback action.
         """
+
+        self.logger.debug('In play_random_music()')
+
         # get localization data
         data = self.handler_input.attributes_manager.request_attributes["_"]
 
@@ -703,6 +716,9 @@ class Controller:
         Returns:
             Response: The response object containing the result of the playback action.
         """
+
+        self.logger.debug('In play_music_by_artist()')
+
         # get localization data
         data = self.handler_input.attributes_manager.request_attributes["_"]
 
@@ -762,6 +778,9 @@ class Controller:
         Returns:
             Response: The response object containing the result of the playback action.
         """
+
+        self.logger.debug('In play_song_by_artist()')
+
         # get localization data
         data = self.handler_input.attributes_manager.request_attributes["_"]
 
@@ -825,6 +844,9 @@ class Controller:
         Returns:
             Response: The response object containing the result of the playback action.
         """
+
+        self.logger.debug('In play_album_by_artist()')
+
         # get localization data
         data = self.handler_input.attributes_manager.request_attributes["_"]
 
@@ -889,6 +911,8 @@ class Controller:
             Response: The response object containing the result of the playback action.
         """
 
+        self.logger.debug('In play_music_by_genre()')
+
         # get localization data
         data = self.handler_input.attributes_manager.request_attributes["_"]
 
@@ -939,6 +963,9 @@ class Controller:
         Returns:
             Response: The response object containing the result of the playback action.
         """
+
+        self.logger.debug('In play_playlist()')
+
         # get localization data
         data = self.handler_input.attributes_manager.request_attributes["_"]
 
