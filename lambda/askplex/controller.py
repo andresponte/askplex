@@ -555,19 +555,15 @@ class Controller:
         """
         Handles the playback failure scenario
         This method is called when a playback failure occurs. It logs the event,
-        closes the playback session, and returns the appropriate response.
+        and tries with the next track in the queue.
         Returns:
             Response: The response object with no output speech.
         """
-        
+
         self.logger.debug('In playback_failed()')
         persistence_attr = self.handler_input.attributes_manager.persistent_attributes
-        playback_info = persistence_attr.get("playback_info")
 
-        playback_info["in_playback_session"] = False
-
-        return self.handler_input.response_builder.response
-
+        return self.next_playback()
 
 #
 # Plex API utils
