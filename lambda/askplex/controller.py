@@ -258,6 +258,7 @@ class Controller:
         playback_info["offset_in_ms"] = 0
         playback_info["playback_index_changed"] = True
         playback_info["playlist"] = {}
+        playback_info["play_order"] = []
 
 
 #
