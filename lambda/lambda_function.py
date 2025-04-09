@@ -742,19 +742,20 @@ class LocalizationInterceptor(AbstractRequestInterceptor):
 
     def process(self, handler_input):
         locale = handler_input.request_envelope.request.locale
-        logger.info("Locale is: {}".format(locale[:2]))
-
+        logger.info("Locale is: {}".format(locale))
+        
         # localized strings stored in language_strings.json
         with open("askplex/language_strings.json") as language_prompts:
             language_data = json.load(language_prompts)
         # set default translation data to broader translation
-
-        data = language_data[locale[:2]]
-        # if a more specialized translation exists, then select it instead
-        # example: "fr-CA" will pick "fr" translations first, but if "fr-CA" translation exists,
-        #          then pick that instead
+        
+        # if a more specialized translation exists, then select it otherwise try with the more generic as a fallback
+        # example: "fr-CA" will pick "fr-CA" translation if exists, otherwise will try with "fr"
         if locale in language_data:
-            data.update(language_data[locale])
+            data = language_data[locale]
+        else: 
+            data = language_data[locale[:2]]
+
         handler_input.attributes_manager.request_attributes["_"] = data
 
 
