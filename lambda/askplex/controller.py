@@ -279,16 +279,19 @@ class Controller:
 
         metadata = AudioItemMetadata(
             title = track["title"],
-            subtitle = track["artist"],
-            art=display.Image(
+            subtitle = track["artist"]
+        )        
+        if track["album_art"] is not None:
+            metadata.art=display.Image(
                 content_description = track["album"],
                 sources=[
                     display.ImageInstance(
                         url=track["album_art"]
                     )
                 ]
-            ),
-            background_image=display.Image(
+            )
+        if track["artist_art"] is not None:
+            metadata.background_image=display.Image(
                 content_description = track["artist"],
                 sources = [
                     display.ImageInstance(
@@ -296,7 +299,6 @@ class Controller:
                     )
                 ]
             )
-        )
 
         stream = Stream(token=track["id"], url=track["uri"], offset_in_milliseconds=offset, expected_previous_token=previous_token)
         return AudioItem(stream=stream, metadata=metadata)
