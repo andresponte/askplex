@@ -176,7 +176,6 @@
           ],
           "name": "PlayPlaylist",
           "samples": [
-            "{playlist}",
             "Playlist {playlist}",
             "Spiele die Playlist {playlist}"
           ]
