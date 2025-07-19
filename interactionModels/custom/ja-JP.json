@@ -166,7 +166,6 @@
           ],
           "name": "PlayPlaylist",
           "samples": [
-            "{playlist}",
             "{playlist}プレイリスト",
             "{playlist}プレイリストを再生して"
           ]
