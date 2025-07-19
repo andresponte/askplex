@@ -203,7 +203,6 @@
           ],
           "name": "PlayPlaylist",
           "samples": [
-            "{playlist}",
             "lista {playlist}",
             "lista de reproducción {playlist}",
             "pon la lista {playlist}",

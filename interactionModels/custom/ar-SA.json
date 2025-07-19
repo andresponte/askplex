@@ -174,7 +174,6 @@
           ],
           "name": "PlayPlaylist",
           "samples": [
-            "{playlist}",
             "قائمة التشغيل {playlist}",
             "شغل قائمة التشغيل {playlist}"
           ]

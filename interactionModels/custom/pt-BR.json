@@ -194,7 +194,6 @@
           ],
           "name": "PlayPlaylist",
           "samples": [
-            "{playlist}",
             "lista {playlist}",
             "lista de reprodução {playlist}",
             "toca a lista {playlist}",

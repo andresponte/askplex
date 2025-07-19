@@ -187,7 +187,6 @@
           ],
           "name": "PlayPlaylist",
           "samples": [
-            "{playlist}",
             "Afspeellijst {playlist}",
             "Speel de afspeellijst {playlist}"
           ]

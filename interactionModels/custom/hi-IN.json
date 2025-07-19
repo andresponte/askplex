@@ -178,7 +178,6 @@
           ],
           "name": "PlayPlaylist",
           "samples": [
-            "{playlist}",
             "प्लेलिस्ट {playlist}",
             "चलाओ प्लेलिस्ट {playlist}"
           ]
