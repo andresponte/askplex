@@ -24,7 +24,7 @@
         "PMS_GENRE_SEARCH_EMPTY": "Sorry, I can't find {} music in your collection",
         "PMS_PLAYLIST_SEARCH_ERROR": "Sorry, there was an error when searching for the playlist {}",
         "PMS_PLAYLIST_SEARCH_EMPTY": "Sorry, I can't find the playlist {}",
-        "PMS_PLAYING": "Playing {} in AsPlex",
+        "PMS_PLAYING": "Playing {} in AskPlex",
         "PMS_PLNAME_RANDOM_MUSIC": "Random music",
         "PMS_PLNAME_MUSIC_BY_ARTIST": "music by {}",
         "PMS_PLNAME_SONG": "{song} by {artist}",
