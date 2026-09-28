@@ -1,0 +1,39 @@
+name: Deploy Alexa Skill
+
+on:
+  push:
+    branches:
+      - main  # Change to 'master' if that is your primary branch name
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js for ASK CLI
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Set up Python environment
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install ASK CLI globally
+        run: npm install -g ask-cli
+
+      - name: Configure ASK CLI credentials
+        run: |
+          mkdir -p ~/.ask
+          echo '${{ secrets.ASK_CONFIG }}' > ~/.ask/cli_config
+
+      - name: Recreate sensitive config.py from GitHub Secrets
+        run: |
+          echo "${{ secrets.CONFIG_PY_CONTENT }}" > lambda/askplex/config.py
+
+      - name: Deploy skill package and backend to Alexa Console
+        run: ask deploy
