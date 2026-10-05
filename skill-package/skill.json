@@ -1,0 +1,89 @@
+{
+  "manifest": {
+    "publishingInformation": {
+      "locales": {
+        "ar-SA": {
+          "summary": "AskPlex هو مهارة Alexa تشغيل الموسيقى المخزنة على خادم الوسائط Plex الخاص بك.",
+          "name": "askplex"
+        },
+        "de-DE": {
+          "summary": "AskPlex ist ein Alexa-Skill, mit dem Sie auf Ihrem Plex-Medienserver gespeicherte Musik abspielen können.",
+          "name": "askplex"
+        },
+        "en-AU": {
+          "summary": "AskPlex is an Alexa skill that allows you to play music stored on your Plex media server.",
+          "name": "askplex"
+        },
+        "en-CA": {
+          "summary": "AskPlex is an Alexa skill that allows you to play music stored on your Plex media server.",
+          "name": "askplex"
+        },
+        "en-IN": {
+          "summary": "AskPlex is an Alexa skill that allows you to play music stored on your Plex media server.",
+          "name": "askplex"
+        },
+        "en-UK": {
+          "summary": "AskPlex is an Alexa skill that allows you to play music stored on your Plex media server.",
+          "name": "askplex"
+        },
+        "en-US": {
+          "summary": "AskPlex is an Alexa skill that allows you to play music stored on your Plex media server.",
+          "name": "askplex"
+        },
+        "es-ES": {
+          "summary": "AskPlex es una skill de Alexa que permite reproducir música almacenada en tu servidor de medios Plex.",
+          "name": "askplex"
+        },
+        "es-MX": {
+          "summary": "AskPlex es una skill de Alexa que permite reproducir música almacenada en tu servidor de medios Plex.",
+          "name": "askplex"
+        },
+        "es-US": {
+          "summary": "AskPlex es una skill de Alexa que permite reproducir música almacenada en tu servidor de medios Plex.",
+          "name": "askplex"
+        },
+        "fr-CA": {
+          "summary": "AskPlex est une skill Alexa qui vous permet de lire de la musique stockée sur votre serveur média Plex.",
+          "name": "askplex"
+        },
+        "fr-FR": {
+          "summary": "AskPlex est une skill Alexa qui vous permet de lire de la musique stockée sur votre serveur média Plex.",
+          "name": "askplex"
+        },
+        "hi-IN": {
+          "summary": "AskPlex एक Alexa स्किल है जो आपको अपने Plex मीडिया सर्वर पर संग्रहीत संगीत चलाने की अनुमति देता है।",
+          "name": "askplex"
+        },
+        "it-IT": {
+          "summary": "AskPlex è una skill Alexa che ti consente di riprodurre la musica memorizzata sul tuo server media Plex.",
+          "name": "askplex"
+        },
+        "ja-JP": {
+          "summary": "AskPlexは、Plexメディアサーバーに保存されている音楽を再生できるAlexaスキルです。",
+          "name": "askplex"
+        },
+        "nl-NL": {
+          "summary": "AskPlex is een Alexa-skill waarmee je muziek kunt afspelen die is opgeslagen op je Plex-mediaserver.",
+          "name": "askplex"
+        },
+        "pt-BR": {
+          "summary": "AskPlex é uma skill da Alexa que permite reproduzir músicas armazenadas no seu servidor de mídia Plex.",
+          "name": "askplex"
+        }
+      }
+    },
+    "apis": {
+      "custom": {
+        "endpoint": {
+          "sourceDir": "lambda"
+        },
+        "interfaces": [
+          {
+            "type": "AUDIO_PLAYER"
+          }
+        ]
+      }
+    },
+    "manifestVersion": "1.0"
+  }
+}
