@@ -1,0 +1,19 @@
+{
+  "askcliResourcesVersion": "2020-07-01",
+  "profiles": {
+    "default": {
+      "skillMetadata": {
+        "src": "./skill-package"
+      },
+      "code": {
+        "default": {
+          "src": "./lambda",
+          "runtime": "python3.11"
+        }
+      },
+      "infrastructure": {
+        "type": "@ask-cli/hosted-skill-deployer"
+      }
+    }
+  }
+}

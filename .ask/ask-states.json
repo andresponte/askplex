@@ -1,0 +1,11 @@
+{
+  "askcliProfile": "default",
+  "profiles": {
+    "default": {
+      "skillMetadata": {},
+      "code": {
+        "default": {}
+      }
+    }
+  }
+}
