@@ -725,7 +725,7 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
         data = handler_input.attributes_manager.request_attributes["_"]
 
         speak_output = data[prompts.SKILL_EXCEPTION]
-        handler_input.response_builder.speak(speak_output).ask(speak_output).set_should_end_session(True)
+        handler_input.response_builder.speak(speak_output).set_should_end_session(True)
 
         return handler_input.response_builder.response
 

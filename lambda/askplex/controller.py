@@ -599,11 +599,11 @@ class Controller:
         except NotFound  as exception:
             speak_output = data[prompts.PMS_SECTION_NOT_FOUND]
             self.logger.error(exception)
-            return self.handler_input.response_builder.speak(speak_output).ask(speak_output).response
+            return self.handler_input.response_builder.speak(speak_output).response
         except Exception as exception:
             speak_output = data[prompts.PMS_CONNECTION_ERROR]
             self.logger.error(exception)
-            return self.handler_input.response_builder.speak(speak_output).ask(speak_output).response
+            return self.handler_input.response_builder.speak(speak_output).response
 
 
     def set_playlist_name(self, name: str) -> None:
@@ -737,12 +737,12 @@ class Controller:
         except Exception as exception:
             speak_output = data[prompts.PMS_CONNECTION_ERROR]
             self.logger.error(exception)
-            return self.handler_input.response_builder.speak(speak_output).ask(speak_output).response
+            return self.handler_input.response_builder.speak(speak_output).response
 
         if len(plex_track_list) == 0:
             speak_output = data[prompts.PMS_TRACKS_SEARCH_EMPTY]
             self.logger.error(speak_output)
-            return self.handler_input.response_builder.speak(speak_output).ask(speak_output).response
+            return self.handler_input.response_builder.speak(speak_output).response
 
         self.clear_playlist()
         self.add_plex_tracks(plex_track_list)
@@ -802,7 +802,7 @@ class Controller:
         except Exception as exception:
             speak_output = data[prompts.PMS_ARTIST_SEARCH_ERROR].format(artist.value)
             self.logger.error(exception)
-            return self.handler_input.response_builder.speak(speak_output).ask(speak_output).response
+            return self.handler_input.response_builder.speak(speak_output).response
 
         if len(artist_results) == 0:
             speak_output = data[prompts.PMS_ARTIST_SEARCH_EMPTY].format(artist.value)
@@ -875,7 +875,7 @@ class Controller:
         except Exception as exception:
             speak_output = data[prompts.PMS_ARTIST_SEARCH_ERROR].format(artist.value)
             self.logger.error(exception)
-            return self.handler_input.response_builder.speak(speak_output).ask(speak_output).response
+            return self.handler_input.response_builder.speak(speak_output).response
 
         if len(artist_results) == 0:
             speak_output = data[prompts.PMS_ARTIST_SEARCH_EMPTY].format(artist.value)
@@ -956,7 +956,7 @@ class Controller:
         except Exception as exception:
             speak_output = data[prompts.PMS_SONG_SEARCH_ERROR].format(song=song.value, artist=artist_best_match)
             self.logger.error(exception)
-            return self.handler_input.response_builder.speak(speak_output).ask(speak_output).response
+            return self.handler_input.response_builder.speak(speak_output).response
 
         self.clear_playlist()
         self.add_plex_track(plex_track)
@@ -1015,7 +1015,7 @@ class Controller:
         except Exception as exception:
             speak_output = data[prompts.PMS_ARTIST_SEARCH_ERROR].format(artist.value)
             self.logger.error(exception)
-            return self.handler_input.response_builder.speak(speak_output).ask(speak_output).response
+            return self.handler_input.response_builder.speak(speak_output).response
 
         if len(artist_results) == 0:
             speak_output = data[prompts.PMS_ARTIST_SEARCH_EMPTY].format(artist.value)
@@ -1042,7 +1042,7 @@ class Controller:
         except Exception as exception:
             speak_output = data[prompts.PMS_ALBUM_SEARCH_ERROR].format(album.value, artist=artist_best_match)
             self.logger.error(exception)
-            return self.handler_input.response_builder.speak(speak_output).ask(speak_output).response
+            return self.handler_input.response_builder.speak(speak_output).response
 
         self.clear_playlist()
         self.add_plex_tracks(plex_track_list)
@@ -1090,7 +1090,7 @@ class Controller:
         except Exception as exception:
             speak_output = data[prompts.PMS_GENRE_SEARCH_ERROR].format(genre.value)
             self.logger.error(exception)
-            return self.handler_input.response_builder.speak(speak_output).ask(speak_output).response
+            return self.handler_input.response_builder.speak(speak_output).response
 
         if len(plex_track_list)==0:
             speak_output = data[prompts.PMS_GENRE_SEARCH_EMPTY].format(genre.value)
@@ -1157,7 +1157,7 @@ class Controller:
         except Exception as exception:
             speak_output = data[prompts.PMS_PLAYLIST_SEARCH_ERROR].format(playlist.value)
             self.logger.error(exception)
-            return self.handler_input.response_builder.speak(speak_output).ask(speak_output).response
+            return self.handler_input.response_builder.speak(speak_output).response
 
         self.clear_playlist()
         self.add_plex_tracks(plex_track_list)
