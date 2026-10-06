@@ -745,7 +745,7 @@ class LocalizationInterceptor(AbstractRequestInterceptor):
         logger.info("Locale is: {}".format(locale))
         
         # localized strings stored in language_strings.json
-        with open("askplex/language_strings.json") as language_prompts:
+        with open("askplex/language_strings.json", encoding="utf-8") as language_prompts:
             language_data = json.load(language_prompts)
         # set default translation data to broader translation
         
