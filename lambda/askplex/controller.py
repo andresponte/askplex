@@ -1,4 +1,5 @@
 import random
+import unidecode
 
 from typing import List, Dict
 from logging import Logger
@@ -6,13 +7,17 @@ from logging import Logger
 from ask_sdk_model import Response
 from ask_sdk_model.interfaces.audioplayer import AudioItem, Stream, AudioItemMetadata, PlayDirective, PlayBehavior, StopDirective
 from ask_sdk_model.interfaces import display
-
 from ask_sdk_core.handler_input import HandlerInput
 from ask_sdk_core.utils import get_slot_value_v2
+
+from datetime import datetime
+from number_parser import parse
 
 from plexapi.audio import Track
 from plexapi.server import PlexServer
 from plexapi.exceptions import NotFound
+
+from rapidfuzz import process, fuzz
 
 from . import config
 from . import prompts
@@ -654,6 +659,54 @@ class Controller:
         for plex_track in plex_track_list:
             self.add_plex_track(plex_track)
 
+
+    def normalize_text(self, text: str) -> str:
+        self.logger.debug('In normalize_text()')
+        
+        # get locale
+        locale = self.handler_input.request_envelope.request.locale
+        lang = locale.split("-", 1)[0].lower()
+
+        # convert to lowercase and remove accents
+        text = unidecode.unidecode(text.lower())
+        
+        # convert english number names
+        try:
+            text = parse(text, language="en")
+        except Exception:
+            pass
+
+        # convert number names according to locale
+        try:
+            text = parse(text, language=lang)
+        except Exception:
+            pass
+        
+        return text.strip()
+
+
+    def best_match(self, query: str, candidates: List[str]) -> str:
+        self.logger.debug('In best_match()')
+        
+        query_n = self.normalize_text(query)
+        candidates_n = [self.normalize_text(c) for c in candidates]
+        
+        self.logger.debug('normalized query:' + query_n)
+        
+        match = process.extractOne(
+            query_n,
+            candidates_n,
+            scorer=fuzz.ratio,
+            score_cutoff=config.FUZZ_MATCH_SCORE_CUTOFF
+        )
+        
+        if not match:
+            return None
+        
+        matched_norm, score, index = match
+        return candidates[index]
+
+
 #
 # Plex API control
 #
@@ -733,9 +786,19 @@ class Controller:
         if response is not None:
             return response
 
-        # Search for the artist
+        # Get the list of all artists
+        artists = sorted({a.title for a in self.section.all()})
+
+        # Get the best match for the artist string
+        artist_best_match = self.best_match(artist.value, artists)
+        if artist_best_match is None:
+            speak_output = data[prompts.PMS_ARTIST_SEARCH_EMPTY].format(artist.value)
+            self.logger.error(speak_output)
+            return self.handler_input.response_builder.speak(speak_output).ask(speak_output).response
+
+        # Get the artist object
         try:
-            artist_results = self.section.searchArtists(title=artist.value)
+            artist_results = self.section.searchArtists(title=artist_best_match)
         except Exception as exception:
             speak_output = data[prompts.PMS_ARTIST_SEARCH_ERROR].format(artist.value)
             self.logger.error(exception)
@@ -758,7 +821,7 @@ class Controller:
         self.clear_playlist()
         self.add_plex_tracks(plex_track_list)
 
-        playlist_name = data[prompts.PMS_PLNAME_MUSIC_BY_ARTIST].format(artist.value)
+        playlist_name = data[prompts.PMS_PLNAME_MUSIC_BY_ARTIST].format(artist_results[0].title)
         self.set_playlist_name(playlist_name)
         speak_output = data[prompts.PMS_PLAYING].format(playlist_name)
 
@@ -795,10 +858,20 @@ class Controller:
         response = self.load_music_section()
         if response is not None:
             return response
+        
+        # Get the list of all artists
+        artists = sorted({a.title for a in self.section.all()})
 
-        # Search for the artist
+        # Get the best match for the artist string
+        artist_best_match = self.best_match(artist.value, artists)
+        if artist_best_match is None:
+            speak_output = data[prompts.PMS_ARTIST_SEARCH_EMPTY].format(artist.value)
+            self.logger.error(speak_output)
+            return self.handler_input.response_builder.speak(speak_output).ask(speak_output).response
+
+        # Get the artist object
         try:
-            artist_results = self.section.searchArtists(title=artist.value)
+            artist_results = self.section.searchArtists(title=artist_best_match)
         except Exception as exception:
             speak_output = data[prompts.PMS_ARTIST_SEARCH_ERROR].format(artist.value)
             self.logger.error(exception)
@@ -809,22 +882,86 @@ class Controller:
             self.logger.error(speak_output)
             return self.handler_input.response_builder.speak(speak_output).ask(speak_output).response
 
-        # Search for the song
-        try:
-            plex_track = artist_results[0].track(song.value)
-        except NotFound  as exception:
-            speak_output = data[prompts.PMS_SONG_SEARCH_ERROR].format(song=song.value, artist=artist.value)
-            self.logger.error(exception)
+        # Get the list of all artist songs
+        songs = sorted({s.title for s in artist_results[0].tracks()})
+        
+        # Get the best match for the song string
+        song_best_match = self.best_match(song.value, songs)
+        if song_best_match is None:
+            speak_output = data[prompts.PMS_SONG_SEARCH_EMPTY].format(song=song.value, artist=artist_best_match)
+            self.logger.error(speak_output)
             return self.handler_input.response_builder.speak(speak_output).ask(speak_output).response
+
+        # Search for the track object
+        try:
+            matching_tracks = [
+                track for track in artist_results[0].tracks()
+                if track.title.casefold() == song_best_match.casefold()
+            ]
+            if matching_tracks:
+                if len(matching_tracks) == 1:
+                    plex_track = matching_tracks[0]
+                else:
+                    # If there are multiple matching tracks, use the following selection criteria:
+                    #   1. Select the track with the highest user rating (if available).
+                    #   2. If multiple tracks have the same highest user rating, select the track with the highest popularity (ratingCount).
+                    #   3. If there are still multiple tracks, select the track with the earliest release date (originallyAvailableAt).
+
+                    selection_candidates = matching_tracks
+                    selected_track = None
+
+                    rated_tracks = [
+                        track for track in selection_candidates
+                        if track.userRating is not None
+                    ]
+                    if rated_tracks:
+                        highest_user_rating = max(track.userRating for track in rated_tracks)
+                        top_rated_tracks = [
+                            track for track in rated_tracks
+                            if track.userRating == highest_user_rating
+                        ]
+                        if len(top_rated_tracks) == 1:
+                            selected_track = top_rated_tracks[0]
+                        else:
+                            selection_candidates = top_rated_tracks
+
+                    if selected_track is None:
+                        popular_tracks = [
+                            track for track in selection_candidates
+                            if getattr(track, "ratingCount", None) is not None
+                            and track.ratingCount > 0
+                        ]
+                        if popular_tracks:
+                            highest_popularity = max(track.ratingCount for track in popular_tracks)
+                            top_popular_tracks = [
+                                track for track in popular_tracks
+                                if track.ratingCount == highest_popularity
+                            ]
+                            if len(top_popular_tracks) == 1:
+                                selected_track = top_popular_tracks[0]
+                            else:
+                                selection_candidates = top_popular_tracks
+
+                    if selected_track is not None:
+                        plex_track = selected_track
+                    else:
+                        plex_track = min(
+                            selection_candidates,
+                            key=lambda track: track.album().originallyAvailableAt or datetime.max
+                        )
+            else:
+                speak_output = data[prompts.PMS_SONG_SEARCH_EMPTY].format(song=song.value, artist=artist_best_match)
+                self.logger.error(speak_output)
+                return self.handler_input.response_builder.speak(speak_output).ask(speak_output).response
         except Exception as exception:
-            speak_output = data[prompts.PMS_SONG_SEARCH_ERROR].format(song=song.value, artist=artist.value)
+            speak_output = data[prompts.PMS_SONG_SEARCH_ERROR].format(song=song.value, artist=artist_best_match)
             self.logger.error(exception)
             return self.handler_input.response_builder.speak(speak_output).ask(speak_output).response
 
         self.clear_playlist()
         self.add_plex_track(plex_track)
 
-        playlist_name = data[prompts.PMS_PLNAME_SONG].format(song=song.value, artist=artist.value)
+        playlist_name = data[prompts.PMS_PLNAME_SONG].format(song=plex_track.title, artist=artist_results[0].title)
         self.set_playlist_name(playlist_name)
         speak_output = data[prompts.PMS_PLAYING].format(playlist_name)
 
@@ -861,10 +998,20 @@ class Controller:
         response = self.load_music_section()
         if response is not None:
             return response
+        
+        # Get the list of all artists
+        artists = sorted({a.title for a in self.section.all()})
 
-        # Search for the artist
+        # Get the best match for the artist string
+        artist_best_match = self.best_match(artist.value, artists)
+        if artist_best_match is None:
+            speak_output = data[prompts.PMS_ARTIST_SEARCH_EMPTY].format(artist.value)
+            self.logger.error(speak_output)
+            return self.handler_input.response_builder.speak(speak_output).ask(speak_output).response
+
+        # Get the artist object
         try:
-            artist_results = self.section.searchArtists(title=artist.value)
+            artist_results = self.section.searchArtists(title=artist_best_match)
         except Exception as exception:
             speak_output = data[prompts.PMS_ARTIST_SEARCH_ERROR].format(artist.value)
             self.logger.error(exception)
@@ -875,22 +1022,32 @@ class Controller:
             self.logger.error(speak_output)
             return self.handler_input.response_builder.speak(speak_output).ask(speak_output).response
 
-        # Search for the album
+        # Get the list of all albums
+        albums = sorted({al.title for al in artist_results[0].albums()})
+        
+        # Get the best match for the album string
+        album_best_match = self.best_match(album.value, albums)
+        if album_best_match is None:
+            speak_output = data[prompts.PMS_ALBUM_SEARCH_EMPTY].format(album=album.value, artist=artist_best_match)
+            self.logger.error(speak_output)
+            return self.handler_input.response_builder.speak(speak_output).ask(speak_output).response
+
+        # Search for the album object
         try:
-            plex_track_list = artist_results[0].album(album.value)
+            plex_track_list = artist_results[0].album(album_best_match)
         except NotFound  as exception:
-            speak_output = data[prompts.PMS_ALBUM_SEARCH_EMPTY].format(album=album.value, artist=artist.value)
+            speak_output = data[prompts.PMS_ALBUM_SEARCH_EMPTY].format(album=album.value, artist=artist_best_match)
             self.logger.error(exception)
             return self.handler_input.response_builder.speak(speak_output).ask(speak_output).response
         except Exception as exception:
-            speak_output = data[prompts.PMS_ALBUM_SEARCH_ERROR].format(album.value, artist=artist.value)
+            speak_output = data[prompts.PMS_ALBUM_SEARCH_ERROR].format(album.value, artist=artist_best_match)
             self.logger.error(exception)
             return self.handler_input.response_builder.speak(speak_output).ask(speak_output).response
 
         self.clear_playlist()
         self.add_plex_tracks(plex_track_list)
 
-        playlist_name = data[prompts.PMS_PLNAME_ALBUM].format(album=album.value, artist=artist.value)
+        playlist_name = data[prompts.PMS_PLNAME_ALBUM].format(album=album_best_match, artist=artist_results[0].title)
         self.set_playlist_name(playlist_name)
         speak_output = data[prompts.PMS_PLAYING].format(playlist_name)
 
@@ -979,10 +1136,20 @@ class Controller:
         response = self.load_music_section()
         if response is not None:
             return response
+        
+        # Get the list of all playlists of music section
+        playlists = sorted({pl.title for pl in self.section.playlists()})
 
-        # Search for the playlist
+        # Get the best match for the playlist string
+        playlist_best_match = self.best_match(playlist.value, playlists)
+        if playlist_best_match is None:
+            speak_output = data[prompts.PMS_PLAYLIST_SEARCH_EMPTY].format(playlist.value)
+            self.logger.error(speak_output)
+            return self.handler_input.response_builder.speak(speak_output).ask(speak_output).response
+
+        # Get the playlist object
         try:
-            plex_track_list =  self.section.playlist(title=playlist.value)
+            plex_track_list =  self.section.playlist(title=playlist_best_match)
         except NotFound  as exception:
             speak_output = data[prompts.PMS_PLAYLIST_SEARCH_EMPTY].format(playlist.value)
             self.logger.error(exception)
