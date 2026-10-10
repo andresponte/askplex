@@ -264,6 +264,8 @@ class ResumePlaybackHandler(AbstractRequestHandler):
             player_controller = controller.Controller(logger, handler_input)
             return player_controller.resume_playback()
 
+        return handler_input.response_builder.response
+
 
 class StartOverPlaybackHandler(AbstractRequestHandler):
     """
@@ -286,6 +288,8 @@ class StartOverPlaybackHandler(AbstractRequestHandler):
         if playback_info.get("in_playback_session"):
             player_controller = controller.Controller(logger, handler_input)
             return player_controller.start_playback()
+
+        return handler_input.response_builder.response
 
 
 class PausePlaybackHandler(AbstractRequestHandler):
