@@ -597,7 +597,7 @@ class Controller:
             self.plex_server = PlexServer(config.PMS_SERVER_URL, config.PMS_SERVER_TOKEN)
             self.section = self.plex_server.library.section(config.PMS_DEFAULT_SECTION_NAME)
         except NotFound  as exception:
-            speak_output = data[prompts.PMS_SECTION_NOT_FOUND]
+            speak_output = data[prompts.PMS_SECTION_NOT_FOUND].format(config.PMS_DEFAULT_SECTION_NAME)
             self.logger.error(exception)
             return self.handler_input.response_builder.speak(speak_output).response
         except Exception as exception:
