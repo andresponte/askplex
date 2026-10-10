@@ -135,6 +135,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+requirements-dev.txt
 
 # Spyder project settings
 .spyderproject
@@ -169,3 +170,12 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# VS Code
+.vscode/
+
+# Test server
+server.py
+
+tests/
+pytest.ini

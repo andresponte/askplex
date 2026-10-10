@@ -1,0 +1,35 @@
+name: Branch policy
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, edited]
+
+permissions: {}
+
+jobs:
+  validate-branch-flow:
+    name: validate-branch-flow
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate pull request source and destination
+        shell: bash
+        env:
+          BASE_REF: ${{ github.event.pull_request.base.ref }}
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+          HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          if [[ "$BASE_REF" == "main" ]]; then
+            if [[ "$HEAD_REF" != "develop" || "$HEAD_REPO" != "$REPOSITORY" ]]; then
+              echo "Only PRs from this repository's develop branch may target main."
+              exit 1
+            fi
+          elif [[ "$BASE_REF" == "develop" ]]; then
+            if [[ "$HEAD_REF" == "main" || "$HEAD_REF" == "develop" ]]; then
+              echo "PRs to develop must come from a work branch."
+              exit 1
+            fi
+          else
+            echo "PRs must target develop or main."
+            exit 1
+          fi
