@@ -12,7 +12,7 @@ from ask_sdk_core.utils import get_slot_value_v2
 
 from datetime import datetime
 from number_parser import parse
-
+from urllib.parse import urlsplit, urlunsplit
 from plexapi.audio import Track
 from plexapi.server import PlexServer
 from plexapi.exceptions import NotFound
@@ -623,6 +623,58 @@ class Controller:
         playback_info["playlist_name"] = name
 
 
+    def get_plex_track_stream_url(self, plex_track: Track) -> str:
+        """
+        Gets the Plex track stream URL, using the original file when its format
+        is supported and an MP3 transcode URL otherwise.
+        Args:
+            plex_track (Track): The Plex track for which to get the stream URL.
+        Returns:
+            str: The URL for the original track or its MP3 transcode.
+        """
+        for part in plex_track.iterParts():
+            audio_streams = part.audioStreams()
+            selected_streams = [stream for stream in audio_streams if stream.selected]
+            if not selected_streams:
+                selected_streams = [stream for stream in audio_streams if stream.default]
+            if not selected_streams and len(audio_streams) == 1:
+                selected_streams = audio_streams
+
+            container = (part.container or "").lower()
+            codec = selected_streams[0].codec.lower() if len(selected_streams) == 1 and selected_streams[0].codec else ""
+            if (
+                (container == "mp3" and codec == "mp3")
+                or (container in {"mp4", "m4a"} and codec == "aac")
+            ) and part.key:
+                return plex_track.url(part.key)
+
+        profile_extra = (
+            "add-transcode-target(type=musicProfile&context=streaming"
+            "&protocol=http&container=mp3&audioCodec=mp3)"
+        )
+        stream_url = plex_track.getStreamURL(
+            protocol="http",
+            audioCodec="mp3",
+            container="mp3",
+            musicBitrate=320,
+            directPlay=0,
+            directStream=0,
+            **{
+                "X-Plex-Client-Profile-Name": "Generic",
+                "X-Plex-Client-Profile-Extra": profile_extra,
+            },
+        )
+        url_parts = urlsplit(stream_url)
+        if not url_parts.path.endswith("/start.m3u8"):
+            raise ValueError(f"Unexpected Plex transcode URL path: {url_parts.path}")
+
+        return urlunsplit(
+            url_parts._replace(
+                path=f"{url_parts.path.removesuffix('/start.m3u8')}/start.mp3"
+            )
+        )
+
+
     def add_plex_track(self, plex_track: Track) -> None:
         """
         Adds a Plex track to the playlist.
@@ -640,7 +692,7 @@ class Controller:
                 "artist_art": plex_track.url(plex_track.grandparentArt),
                 "album": plex_track.parentTitle,
                 "album_art": plex_track.url(plex_track.parentThumb),
-                "uri": plex_track.getStreamURL().replace("m3u8", "mp3")
+                "uri": self.get_plex_track_stream_url(plex_track)
                 }
 
         self.add_track(track)
