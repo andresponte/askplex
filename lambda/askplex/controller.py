@@ -227,9 +227,9 @@ class Controller:
         play_order = [l for l in range(0, playlist_len)]
 
         if shuffle:
-            play_order.pop(index)
+            play_order.pop(playlist_index)
             random.shuffle(play_order)
-            play_order.insert(0, index)
+            play_order.insert(0, playlist_index)
             index = 0
         else:
             index = playlist_index
