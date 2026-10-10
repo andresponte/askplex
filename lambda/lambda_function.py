@@ -772,8 +772,8 @@ class RequestLogger(AbstractRequestInterceptor):
 
     def process(self, handler_input):
         # type: (HandlerInput) -> None
-        logger.debug("Alexa Request: {}".format(
-            handler_input.request_envelope.request))
+        request = handler_input.request_envelope.request
+        logger.debug("Alexa Request received (type=%s)", type(request).__name__)
 
 
 class LoadPersistenceAttributesRequestInterceptor(AbstractRequestInterceptor):
@@ -832,7 +832,7 @@ class ResponseLogger(AbstractResponseInterceptor):
 
     def process(self, handler_input, response):
         # type: (HandlerInput, Response) -> None
-        logger.debug("Alexa Response: {}".format(response))
+        logger.debug("Alexa Response generated (type=%s)", type(response).__name__)
 
 
 class SavePersistenceAttributesResponseInterceptor(AbstractResponseInterceptor):
