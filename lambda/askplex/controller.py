@@ -14,6 +14,7 @@ from ask_sdk_core.utils import get_slot_value_v2
 
 from datetime import datetime
 from number_parser import parse
+from number_parser.parser import SUPPORTED_LANGUAGES
 from urllib.parse import urlsplit, urlunsplit
 from plexapi.audio import Track
 from plexapi.server import PlexServer
@@ -783,16 +784,11 @@ class Controller:
         text = unidecode.unidecode(text.lower())
         
         # convert english number names
-        try:
-            text = parse(text, language="en")
-        except Exception:
-            pass
+        text = parse(text, language="en")
 
         # convert number names according to locale
-        try:
+        if lang in SUPPORTED_LANGUAGES and lang != "en":
             text = parse(text, language=lang)
-        except Exception:
-            pass
         
         return text.strip()
 
