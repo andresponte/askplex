@@ -548,12 +548,12 @@ class Controller:
 
         # get next track just to update the index
         next_track = self.get_next_track(True)
-        if next_track == None:
-            return self.handler_input.response_builder.response
-
         playback_info["in_playback_session"] = False
         playback_info["next_stream_enqueued"] = False
         playback_info["offset_in_ms"] = 0
+
+        if next_track is None:
+            return self.handler_input.response_builder.response
 
         self.logger.info(f'Next track: {next_track["title"]} by {next_track["artist"]} updated')
         return self.handler_input.response_builder.response
