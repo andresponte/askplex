@@ -3,7 +3,7 @@ import random
 import unidecode
 
 from boto3.dynamodb.types import TypeSerializer
-from typing import List, Dict
+from typing import List, Dict, Optional
 from logging import Logger
 
 from ask_sdk_model import Response
@@ -797,7 +797,7 @@ class Controller:
         return text.strip()
 
 
-    def best_match(self, query: str, candidates: List[str]) -> str:
+    def best_match(self, query: str, candidates: List[str]) -> Optional[str]:
         self.logger.debug('In best_match()')
         
         query_n = self.normalize_text(query)
