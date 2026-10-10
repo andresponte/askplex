@@ -989,7 +989,8 @@ class Controller:
             return self.handler_input.response_builder.speak(speak_output).ask(speak_output).response
 
         # Get the list of all artist songs
-        songs = sorted({s.title for s in artist_results[0].tracks()})
+        artist_tracks = artist_results[0].tracks()
+        songs = sorted({track.title for track in artist_tracks})
         
         # Get the best match for the song string
         song_best_match = self.best_match(song.value, songs)
@@ -1001,7 +1002,7 @@ class Controller:
         # Search for the track object
         try:
             matching_tracks = [
-                track for track in artist_results[0].tracks()
+                track for track in artist_tracks
                 if track.title.casefold() == song_best_match.casefold()
             ]
             if matching_tracks:
