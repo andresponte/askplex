@@ -1,6 +1,8 @@
+import json
 import random
 import unidecode
 
+from boto3.dynamodb.types import TypeSerializer
 from typing import List, Dict
 from logging import Logger
 
@@ -21,6 +23,16 @@ from rapidfuzz import process, fuzz
 
 from . import config
 from . import prompts
+
+# Leave 100 KiB below DynamoDB's 400 KiB item limit for serialization overhead.
+DYNAMODB_SAFE_ITEM_SIZE_BYTES = 300 * 1024
+_DYNAMODB_TYPE_SERIALIZER = TypeSerializer()
+
+
+def _estimate_dynamodb_serialized_size(value: object) -> int:
+    serialized_value = _DYNAMODB_TYPE_SERIALIZER.serialize(value)
+    serialized_json = json.dumps(serialized_value, ensure_ascii=False, separators=(",", ":"))
+    return len(serialized_json.encode("utf-8"))
 
 class Controller:
     """
@@ -103,6 +115,7 @@ class Controller:
 
         self.handler_input = handler_input
         """handler_input"""
+        self._persistent_attributes_size_bytes = None
 
 
 #
@@ -120,11 +133,34 @@ class Controller:
         self.logger.debug('In add_track()')
         persistence_attr = self.handler_input.attributes_manager.persistent_attributes
         playback_info = persistence_attr.get("playback_info")
+        playback_info.setdefault("playlist_truncated", False)
 
         playlist_len = len(playback_info["playlist"])
+        if self._persistent_attributes_size_bytes is None:
+            self._persistent_attributes_size_bytes = _estimate_dynamodb_serialized_size(
+                persistence_attr
+            )
 
-        playback_info["playlist"][str(playlist_len)] = track
+        playlist_key = str(playlist_len)
+        playlist_entry_size = len(json.dumps(
+            playlist_key, ensure_ascii=False, separators=(",", ":")
+        ).encode("utf-8")) + 1 + _estimate_dynamodb_serialized_size(track)
+        if playlist_len:
+            playlist_entry_size += 1
+        play_order_entry_size = _estimate_dynamodb_serialized_size(playlist_len)
+        if playback_info["play_order"]:
+            play_order_entry_size += 1
+
+        added_size = playlist_entry_size + play_order_entry_size
+        if self._persistent_attributes_size_bytes + added_size > DYNAMODB_SAFE_ITEM_SIZE_BYTES:
+            if not playback_info["playlist_truncated"]:
+                self.logger.warning("Playlist exceeds the safe DynamoDB item size; skipping tracks that do not fit")
+            playback_info["playlist_truncated"] = True
+            return
+
+        playback_info["playlist"][playlist_key] = track
         playback_info["play_order"].append(playlist_len)
+        self._persistent_attributes_size_bytes += added_size
 
 
     def get_next_track(self, update_index: bool) -> Dict:
@@ -264,6 +300,8 @@ class Controller:
         playback_info["playback_index_changed"] = True
         playback_info["playlist"] = {}
         playback_info["play_order"] = []
+        playback_info["playlist_truncated"] = False
+        self._persistent_attributes_size_bytes = None
 
 
 #
@@ -326,6 +364,9 @@ class Controller:
 
         playback_info['next_stream_enqueued'] = False
 
+        if current_track is None:
+            playback_info["in_playback_session"] = False
+            return self.handler_input.response_builder.response
 
         directive = PlayDirective(play_behavior=PlayBehavior.REPLACE_ALL, audio_item=self.track_to_audio_item(current_track, int(playback_info["offset_in_ms"]), None))
         self.handler_input.response_builder.add_directive(directive).set_should_end_session(True)
@@ -347,6 +388,10 @@ class Controller:
         playback_info = persistence_attr.get("playback_info")
 
         playback_info["offset_in_ms"] = 0
+
+        if self.get_current_track() is None:
+            playback_info["in_playback_session"] = False
+            return self.handler_input.response_builder.response
 
         return self.resume_playback()
 
@@ -623,6 +668,21 @@ class Controller:
         playback_info["playlist_name"] = name
 
 
+    def get_playing_message(self, playlist_name: str) -> str:
+        """Builds the localized playback announcement, including any size warning."""
+        data = self.handler_input.attributes_manager.request_attributes["_"]
+        playback_info = self.handler_input.attributes_manager.persistent_attributes.get(
+            "playback_info"
+        )
+        speak_output = data[prompts.PMS_PLAYING].format(playlist_name)
+        if playback_info.get("playlist_truncated"):
+            if playback_info.get("playlist"):
+                speak_output += " " + data[prompts.PMS_PLAYLIST_SIZE_LIMIT]
+            else:
+                speak_output = data[prompts.PMS_PLAYLIST_SIZE_LIMIT]
+        return speak_output
+
+
     def get_plex_track_stream_url(self, plex_track: Track) -> str:
         """
         Gets the Plex track stream URL, using the original file when its format
@@ -796,12 +856,11 @@ class Controller:
             self.logger.error(speak_output)
             return self.handler_input.response_builder.speak(speak_output).response
 
-        self.clear_playlist()
-        self.add_plex_tracks(plex_track_list)
-
         playlist_name = data[prompts.PMS_PLNAME_RANDOM_MUSIC]
+        self.clear_playlist()
         self.set_playlist_name(playlist_name)
-        speak_output = data[prompts.PMS_PLAYING].format(playlist_name)
+        self.add_plex_tracks(plex_track_list)
+        speak_output = self.get_playing_message(playlist_name)
 
         self.handler_input.response_builder.speak(speak_output)
         self.logger.info(speak_output)
@@ -870,12 +929,11 @@ class Controller:
                 speak_output = data[prompts.PMS_TRACKS_SEARCH_EMPTY]
                 return self.handler_input.response_builder.speak(speak_output).ask(speak_output).response
 
-        self.clear_playlist()
-        self.add_plex_tracks(plex_track_list)
-
         playlist_name = data[prompts.PMS_PLNAME_MUSIC_BY_ARTIST].format(artist_results[0].title)
+        self.clear_playlist()
         self.set_playlist_name(playlist_name)
-        speak_output = data[prompts.PMS_PLAYING].format(playlist_name)
+        self.add_plex_tracks(plex_track_list)
+        speak_output = self.get_playing_message(playlist_name)
 
         self.handler_input.response_builder.speak(speak_output)
         self.logger.info(speak_output)
@@ -1010,12 +1068,11 @@ class Controller:
             self.logger.error(exception)
             return self.handler_input.response_builder.speak(speak_output).response
 
-        self.clear_playlist()
-        self.add_plex_track(plex_track)
-
         playlist_name = data[prompts.PMS_PLNAME_SONG].format(song=plex_track.title, artist=artist_results[0].title)
+        self.clear_playlist()
         self.set_playlist_name(playlist_name)
-        speak_output = data[prompts.PMS_PLAYING].format(playlist_name)
+        self.add_plex_track(plex_track)
+        speak_output = self.get_playing_message(playlist_name)
 
         self.handler_input.response_builder.speak(speak_output)
         self.logger.info(speak_output)
@@ -1096,12 +1153,11 @@ class Controller:
             self.logger.error(exception)
             return self.handler_input.response_builder.speak(speak_output).response
 
-        self.clear_playlist()
-        self.add_plex_tracks(plex_track_list)
-
         playlist_name = data[prompts.PMS_PLNAME_ALBUM].format(album=album_best_match, artist=artist_results[0].title)
+        self.clear_playlist()
         self.set_playlist_name(playlist_name)
-        speak_output = data[prompts.PMS_PLAYING].format(playlist_name)
+        self.add_plex_tracks(plex_track_list)
+        speak_output = self.get_playing_message(playlist_name)
 
         self.handler_input.response_builder.speak(speak_output)
         self.logger.info(speak_output)
@@ -1149,12 +1205,11 @@ class Controller:
             self.logger.error(speak_output)
             return self.handler_input.response_builder.speak(speak_output).ask(speak_output).response
 
-        self.clear_playlist()
-        self.add_plex_tracks(plex_track_list)
-
         playlist_name = data[prompts.PMS_PLNAME_MUSIC_BY_GENRE].format(genre.value)
+        self.clear_playlist()
         self.set_playlist_name(playlist_name)
-        speak_output = data[prompts.PMS_PLAYING].format(playlist_name)
+        self.add_plex_tracks(plex_track_list)
+        speak_output = self.get_playing_message(playlist_name)
 
         self.handler_input.response_builder.speak(speak_output)
         self.logger.info(speak_output)
@@ -1211,12 +1266,11 @@ class Controller:
             self.logger.error(exception)
             return self.handler_input.response_builder.speak(speak_output).response
 
-        self.clear_playlist()
-        self.add_plex_tracks(plex_track_list)
-
         playlist_name = data[prompts.PMS_PLNAME_PLAYLIST].format(playlist.value)
+        self.clear_playlist()
         self.set_playlist_name(playlist_name)
-        speak_output = data[prompts.PMS_PLAYING].format(playlist_name)
+        self.add_plex_tracks(plex_track_list)
+        speak_output = self.get_playing_message(playlist_name)
 
         self.handler_input.response_builder.speak(speak_output)
         self.logger.info(speak_output)

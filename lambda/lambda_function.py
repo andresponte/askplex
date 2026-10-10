@@ -819,6 +819,7 @@ class LoadPersistenceAttributesRequestInterceptor(AbstractRequestInterceptor):
                 "playback_index_changed": False,
                 "next_stream_enqueued": False,
                 "in_playback_session": False,
+                "playlist_truncated": False,
             }
             logger.debug(f"Controller's default settings loaded")
 
