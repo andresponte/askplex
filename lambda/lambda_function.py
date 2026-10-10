@@ -725,7 +725,7 @@ class CatchAllExceptionHandler(AbstractExceptionHandler):
         data = handler_input.attributes_manager.request_attributes["_"]
 
         speak_output = data[prompts.SKILL_EXCEPTION]
-        handler_input.response_builder.speak(speak_output).ask(speak_output).set_should_end_session(True)
+        handler_input.response_builder.speak(speak_output).set_should_end_session(True)
 
         return handler_input.response_builder.response
 
@@ -745,7 +745,7 @@ class LocalizationInterceptor(AbstractRequestInterceptor):
         logger.info("Locale is: {}".format(locale))
         
         # localized strings stored in language_strings.json
-        with open("askplex/language_strings.json") as language_prompts:
+        with open("askplex/language_strings.json", encoding="utf-8") as language_prompts:
             language_data = json.load(language_prompts)
         # set default translation data to broader translation
         
