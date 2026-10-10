@@ -1092,7 +1092,7 @@ class Controller:
             self.logger.error(exception)
             return self.handler_input.response_builder.speak(speak_output).ask(speak_output).response
         except Exception as exception:
-            speak_output = data[prompts.PMS_ALBUM_SEARCH_ERROR].format(album.value, artist=artist_best_match)
+            speak_output = data[prompts.PMS_ALBUM_SEARCH_ERROR].format(album=album.value, artist=artist_best_match)
             self.logger.error(exception)
             return self.handler_input.response_builder.speak(speak_output).response
 
