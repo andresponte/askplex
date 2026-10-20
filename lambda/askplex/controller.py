@@ -731,7 +731,7 @@ class Controller:
 
         return urlunsplit(
             url_parts._replace(
-                path=f"{url_parts.path.removesuffix('/start.m3u8')}/start.mp3"
+                path=f"{url_parts.path[:-len('/start.m3u8')]}/start.mp3"
             )
         )
 
