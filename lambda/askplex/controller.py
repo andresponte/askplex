@@ -769,7 +769,12 @@ class Controller:
         """
 
         self.logger.debug('In add_plex_tracks()')
+        playback_info = self.handler_input.attributes_manager.persistent_attributes.get(
+            "playback_info"
+        )
         for plex_track in plex_track_list:
+            if playback_info.get("playlist_truncated"):
+                break
             self.add_plex_track(plex_track)
 
 
