@@ -1258,7 +1258,7 @@ class Controller:
 
         # Get the playlist object
         try:
-            plex_track_list =  self.section.playlist(title=playlist_best_match)
+            plex_track_list =  self.section.playlist(title=playlist_best_match, maxresults=config.PMS_DEFAULT_MAX_RESULTS)
         except NotFound  as exception:
             speak_output = data[prompts.PMS_PLAYLIST_SEARCH_EMPTY].format(playlist.value)
             self.logger.error(exception)
